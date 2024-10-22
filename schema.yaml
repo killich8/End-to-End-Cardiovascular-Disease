@@ -1,0 +1,16 @@
+COLUMNS:
+
+  Age: int64
+  Sex: object
+  ChestPainType: object
+  RestingBP: int64
+  Cholesterol: int64
+  FastingBS: int64
+  RestingECG: object
+  MaxHR: int64
+  ExerciseAngina: object
+  Oldpeak: float64
+  ST_Slope: object
+
+TARGET_COLUMN:
+  name: HeartDisease
