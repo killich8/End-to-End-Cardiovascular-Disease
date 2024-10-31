@@ -124,3 +124,34 @@ def get_size(path: Path) -> str:
     """
     size_in_kb = round(os.path.getsize(path)/1024)
     return f"~ {size_in_kb} KB"
+
+
+class DataPreprocessing:
+    def __init__(self):
+        # Load pre-trained encoders and scaler
+        self.label_encoders = joblib.load('label_encoders.pkl')  # Dictionary of LabelEncoders for categorical data
+        self.scalers = joblib.load('scalers.pkl')  # Dictionary of scalers for numerical data
+
+    def label_encode(self, data):
+        # Apply label encoding based on pre-trained encoders
+        categorical_columns = ['Sex', 'ChestPainType', 'RestingECG', 'ExerciseAngina', 'ST_Slope']
+        
+        for column in categorical_columns:
+            if column in self.label_encoders:
+                data[column] = self.label_encoders[column].transform(data[column])
+            else:
+                raise ValueError(f"Encoder for {column} not found!")
+        
+        return data
+
+    def scale(self, data):
+        # Apply scaling based on pre-trained scalers
+        numerical_columns = ['Age', 'RestingBP', 'Cholesterol', 'MaxHR', 'Oldpeak']
+        
+        for col in numerical_columns:
+            if col in self.scalers:
+                data[col] = self.scalers[col].transform(data[[col]])
+            else:
+                raise ValueError(f"Scaler for {col} not found!")
+        
+        return data
